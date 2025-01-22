@@ -11,7 +11,7 @@ const addFood = async (req, res) => {
     price: req.body.price,
     image: image_filename,
     category: req.body.category,
-    quantity: req.body.quantity,
+   
   });
 
   try {
