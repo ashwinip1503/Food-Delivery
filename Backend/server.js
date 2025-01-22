@@ -3,6 +3,8 @@ import cors from "cors";
 import { connectDB } from "./config/db.js";
 import dotenv from "dotenv";
 import foodRouter from "./routes/FoodRoute.js";
+import userRouter from "./routes/userRoute.js";
+import cartRouter from "./routes/CartRoute.js";
 
 // Load environment variables from .env file
 dotenv.config();
@@ -18,9 +20,11 @@ app.use(cors());
 // DB connection
 connectDB();
 
-//api endpoints
-app.use("/api/food",foodRouter)
-app.use("/images",express.static('uploads'))
+// API endpoints
+app.use("/api/food", foodRouter);
+app.use("/images", express.static('uploads'));
+app.use("/api/user", userRouter); // Corrected this line
+app.use("/api/cart", cartRouter); 
 
 // Route
 app.get("/", (req, res) => {
