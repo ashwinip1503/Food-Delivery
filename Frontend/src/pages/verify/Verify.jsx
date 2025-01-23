@@ -21,13 +21,14 @@ const Verify = () => {
       }
     } catch (error) {
       console.error("Error verifying payment:", error);
-      // Handle the error if needed, like showing an error message to the user
     }
   };
 
   useEffect(() => {
-    verifyPayment();
-  }, [success, orderId]); // Adding dependencies to useEffect
+    if (success && orderId) {
+      verifyPayment();
+    }
+  }, [success, orderId]);
 
   return (
     <div className="verify">

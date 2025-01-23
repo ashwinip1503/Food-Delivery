@@ -1,4 +1,4 @@
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 dotenv.config();
 import orderModel from "../models/OrderModel.js";
 import userModel from "../models/UserModel.js";
@@ -56,20 +56,20 @@ const placeOrder = async (req, res) => {
 };
 
 const verifyOrder = async (req, res) => {
-  console.log("Verify Order request received"); // Add logs for troubleshooting
-  console.log("Request Body:", req.body); // Improved log for inspection
+  console.log("Verify Order request received");
+  console.log("Request Body:", req.body);
   const { orderId, success } = req.body;
 
   try {
-    if (success === "true") {
+    if (success === "true" || success === true) {
       await orderModel.findByIdAndUpdate(orderId, { payment: true });
       res.json({ success: true, message: "Order placed successfully" });
     } else {
       await orderModel.findByIdAndDelete(orderId);
-      res.json({ success: false, message: "Payment failed, order cancelled" });
+      res.json({ success: false, message: "Payment failed, order canceled" });
     }
   } catch (error) {
-    console.error("Error verifying order", error); // Improved error message
+    console.error("Error verifying order", error);
     res.json({ success: false, message: "Error verifying order" });
   }
 };
@@ -81,8 +81,21 @@ const userOrders = async (req, res) => {
     res.json({ success: true, data: orders });
   } catch (error) {
     console.error("Error fetching user orders:", error);
-    res.status(500).json({ success: false, message: "Error fetching user orders" });
+    res
+      .status(500)
+      .json({ success: false, message: "Error fetching user orders" });
   }
 };
 
-export { placeOrder, verifyOrder, userOrders };
+//listing orders for admin panel
+const listOrders = async (req, res) => {
+  try {
+    const orders = await orderModel.findOne({});
+    res.json({ success: true, data: orders });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: "Error" });
+  }
+};
+
+export { placeOrder, verifyOrder, userOrders, listOrders };
