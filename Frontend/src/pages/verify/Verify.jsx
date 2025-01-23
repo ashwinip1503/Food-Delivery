@@ -8,10 +8,26 @@ const Verify = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const success = searchParams.get("success");
   const orderId = searchParams.get("orderId");
-  console.log(success, orderId)
+  const { url } = useContext(StoreContext);
+  const navigate = useNavigate();
 
-  
+  const verifyPayment = async () => {
+    try {
+      const response = await axios.post(`${url}/api/order/verify`, { success, orderId });
+      if (response.data.success) {
+        navigate("/myorders");
+      } else {
+        navigate("/");
+      }
+    } catch (error) {
+      console.error("Error verifying payment:", error);
+      // Handle the error if needed, like showing an error message to the user
+    }
+  };
 
+  useEffect(() => {
+    verifyPayment();
+  }, [success, orderId]); // Adding dependencies to useEffect
 
   return (
     <div className="verify">
@@ -20,4 +36,4 @@ const Verify = () => {
   );
 };
 
-export default verify;
+export default Verify;
