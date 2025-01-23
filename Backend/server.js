@@ -5,8 +5,9 @@ import dotenv from "dotenv";
 import foodRouter from "./routes/FoodRoute.js";
 import userRouter from "./routes/userRoute.js";
 import cartRouter from "./routes/CartRoute.js";
+import orderRouter from "./routes/orderRoute.js";
 
-// Load environment variables from .env file
+// Load environment variables
 dotenv.config();
 
 // App configuration
@@ -17,16 +18,17 @@ const port = 4000;
 app.use(express.json());
 app.use(cors());
 
-// DB connection
+// Connect to the database
 connectDB();
 
 // API endpoints
 app.use("/api/food", foodRouter);
-app.use("/images", express.static('uploads'));
-app.use("/api/user", userRouter); // Corrected this line
-app.use("/api/cart", cartRouter); 
+app.use("/images", express.static("uploads"));
+app.use("/api/user", userRouter);
+app.use("/api/cart", cartRouter);
+app.use("/api/order", orderRouter);
 
-// Route
+// Test route
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
